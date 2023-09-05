@@ -1,5 +1,4 @@
 import { JSDOM } from "jsdom";
-import { Puzzle } from "../Puzzle";
 import { SESSION_TOKEN } from "../secrets";
 import { getPuzzle, getPuzzleInput } from "../utils";
 import kleur from "kleur";
