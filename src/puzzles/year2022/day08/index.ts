@@ -42,12 +42,36 @@ class Node<T> {
         return right || up || left || down;
     }
 
-    get visibleRight(): boolean {
-        return this.allRight.reverse().reduce((prev, curr) => {
-            if(!prev) return false;
-            if(curr.value < this.value) return true;
-            return false;
-        }, true);
+    get visibleRight(): number {
+        return this.getVisible(this.allRight);
+    }
+
+    get visibleLeft(): number {
+        return this.getVisible(this.allLeft);
+    }
+
+    get visibleUp(): number {
+        return this.getVisible(this.allUp);
+    }
+
+    get visibleDown(): number {
+        return this.getVisible(this.allDown);
+    }
+
+    getVisible(nodes: Node<T>[]) {
+        let value = 0;
+        for(const n of nodes) {
+            value++;
+            if(n.value >= this.value) {
+                return value;
+            }
+        }
+
+        return value;
+    }
+
+    get scenicScore(): number {
+        return this.visibleRight * this.visibleDown * this.visibleUp * this.visibleLeft;
     }
 
     get allRight(): Node<T>[] {
@@ -158,7 +182,7 @@ export default class extends Puzzle {
     public samples: Sample[] = [
         {
             input: "30373\n25512\n65332\n33549\n35390", 
-            solution: {part1: "21"}
+            solution: {part1: "21", part2: "8"}
         },
     ]
 
@@ -182,8 +206,17 @@ export default class extends Puzzle {
 
         const visibleNodesCount = map.nodes.filter(node => node !== null && node.visible).length;
 
+        let biggestScenicScore = 0;
+        for(const n of map.nodes) {
+            if(!n) continue;
+            if(n.scenicScore > biggestScenicScore) {
+                biggestScenicScore = n.scenicScore;
+            }
+        }
+
         return {
             part1: visibleNodesCount.toString(),
+            part2: biggestScenicScore.toString(),
         }
     }
 
