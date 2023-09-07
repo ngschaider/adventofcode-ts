@@ -17,7 +17,7 @@ for(const yearFolder of yearFolders) {
 
 						for(const sample of puzzle.samples) {
 							const solution = await puzzle.solve(sample.input);
-							if(solution !== undefined) {
+							if(solution !== undefined && sample.solution.part1 !== undefined) {
 								expect(solution.part1).toBe(sample.solution.part1);
 							}
 						}
